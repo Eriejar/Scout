@@ -3,11 +3,11 @@ layout: default
 title:  Home
 ---
 
-Source code: https://github.com/USER/PROJECT (_fix this_)
+Source code: https://github.com/eriejar/Scout
 
 Reports:
 
-- [Proposal](proposal.html)
+- [Proposal](proposal.md)
 - [Status](status.html)
 - [Final](final.html)
 
