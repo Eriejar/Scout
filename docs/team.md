@@ -7,10 +7,10 @@ title:  Team
 
 
 ## USER 1
-***UCI Net ID***: ucinetid1
+***Michael Li***: michayl4@uci.edu
 
 ## USER 2
-***UCI Net ID***: ucinetid2
+***Kelly Wong***: kellybw@uci.edu
 
 ## USER 3
-***UCI Net ID***: ucinetid3
+***Saswat Mishra***: saswatm@uci.edu
