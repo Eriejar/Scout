@@ -20,6 +20,8 @@ import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 
+from ScoutAI import ScoutAI 
+
 SIZE = 50
 OBS_SIZE = 5
 MAX_EPISODE_STEPS = 100
@@ -47,7 +49,8 @@ def buildEnvironment():
                             "<DrawCuboid x1='{}' x2='{}' y1='2' y2='2' z1='{}' z2='{}' type='air'/>".format(-SIZE, SIZE, -SIZE, SIZE) + \
                             "<DrawCuboid x1='{}' x2='{}' y1='1' y2='1' z1='{}' z2='{}' type='stone'/>".format(-SIZE, SIZE, -SIZE, SIZE) + \
                             '''<DrawBlock x='0'  y='2' z='0' type='air' />
-                            <DrawBlock x='0'  y='1' z='0' type='stone' />
+                            <DrawBlock x='0' y='1' z='1' type='redstone_block' />
+                            <DrawBlock x='0' y='1' z='0' type='emerald_block' />
                             <DrawEntity x='1' y='2' z='2' type="Cow" />
                             <DrawEntity x='10' y='2' z='20' type="Wolf" />
                         </DrawingDecorator>
@@ -80,35 +83,36 @@ def buildEnvironment():
                         </ObservationFromGrid>
                         <AgentQuitFromReachingCommandQuota total="'''+str(MAX_EPISODE_STEPS)+'''" />
                     </AgentHandlers>
-                </AgentSection>
-
-
-                <AgentSection mode="Survival">
-                    <Name>''' + "Scout" + '''</Name>
-                    <AgentStart>
-                      <Placement x="5" y="2" z="5" pitch="45" yaw="0"/>
-                      <Inventory>
-                        <InventoryObject type="wooden_pickaxe" slot="0" quantity="1"/>
-                      </Inventory>
-                    </AgentStart>
-                    <AgentHandlers>
-                      <ContinuousMovementCommands turnSpeedDegs="360"/>
-                      <ChatCommands/>
-                      <MissionQuitCommands/>
-                      <ObservationFromNearbyEntities>
-                        <Range name="entities" xrange="40" yrange="2" zrange="40"/>
-                      </ObservationFromNearbyEntities>
-                      <ObservationFromRay/>
-                      <ObservationFromFullStats/>
-                    </AgentHandlers>
-                    </AgentSection>
+                </AgentSection> 
             </Mission>''' 
+
+                # <AgentSection mode="Survival">
+                #     <Name>''' + "Scout" + '''</Name>
+                #     <AgentStart>
+                #       <Placement x="5" y="2" z="5" pitch="45" yaw="0"/>
+                #       <Inventory>
+                #         <InventoryObject type="wooden_pickaxe" slot="0" quantity="1"/>
+                #       </Inventory>
+                #     </AgentStart>
+                #     <AgentHandlers>
+                #       <ContinuousMovementCommands turnSpeedDegs="360"/>
+                #       <ChatCommands/>
+                #       <MissionQuitCommands/>
+                #       <ObservationFromNearbyEntities>
+                #         <Range name="entities" xrange="40" yrange="2" zrange="40"/>
+                #       </ObservationFromNearbyEntities>
+                #       <ObservationFromRay/>
+                #       <ObservationFromFullStats/>
+                #     </AgentHandlers>
+                #     </AgentSection>
+            
 
 
 
 if __name__ == '__main__':
     # Create default Malmo objects:
     agent_host = MalmoPython.AgentHost()
+    scout_ai = ScoutAI(agent_host)
     try:
         agent_host.parse( sys.argv )
     except RuntimeError as e:
@@ -118,9 +122,9 @@ if __name__ == '__main__':
     if agent_host.receivedArgument("help"):
         print(agent_host.getUsage())
         exit(0)
-    client_pool = MalmoPython.ClientPool()
-    client_pool.add(MalmoPython.ClientInfo( "127.0.0.1", 10000) )
-    client_pool.add(MalmoPython.ClientInfo( "127.0.0.1", 10001) )
+    #client_pool = MalmoPython.ClientPool()
+    #client_pool.add(MalmoPython.ClientInfo( "127.0.0.1", 10000) )
+    #client_pool.add(MalmoPython.ClientInfo( "127.0.0.1", 10001) )
     
     my_mission = MalmoPython.MissionSpec(buildEnvironment(),True)
     my_mission_record = MalmoPython.MissionRecordSpec()
@@ -151,11 +155,18 @@ if __name__ == '__main__':
     print()
     print("Mission running ", end=' ')
 
+
+    scout_ai.go_to_redstone_block(world_state)
     # Loop until mission ends:
     while True:
     #while world_state.is_mission_running:
         print(".", end="")
         time.sleep(0.1)
+
+        
+        action = scout_ai.move_south()
+        agent_host.sendCommand(action)
+
         world_state = agent_host.getWorldState()
         for error in world_state.errors:
             print("Error:",error.text)

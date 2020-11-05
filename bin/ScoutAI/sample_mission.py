@@ -30,6 +30,8 @@ import time
 import json
 import math
 
+from ScoutAI import ScoutAI
+
 from priority_dict import priorityDictionary as PQ
 
 # sys.stdout = os.fdopen(sys.stdout.fileno(), 'w', 0)  # flush print output immediately
@@ -218,7 +220,7 @@ def dijkstra_shortest_path(grid_obs, source, dest, danger_blocks = []):
 
 # Create default Malmo objects:
 agent_host = MalmoPython.AgentHost()
-dog_host = MalmoPython.AgentHost()
+scout_ai = ScoutAI(agent_host)
 try:
     agent_host.parse( sys.argv )
 except RuntimeError as e:
@@ -280,25 +282,25 @@ for i in range(num_repeats):
     # Loop until mission ends:
     action_index = 0
     user_command = None
+    
+    scout_ai.go_to_redstone_block(world_state)
     while world_state.is_mission_running:
         #sys.stdout.write(".")
+        action = None
         time.sleep(0.1)
-
-        if user_command != "move":
-            user_command = input("Enter Command: ")
-            continue
-
         # Sending the next commend from the action list -- found using the Dijkstra algo.
-        if action_index >= len(action_list):
+        if len(scout_ai.action_stack) == 0:
             print("Error:", "out of actions, but mission has not ended!")
             time.sleep(2)
         else:
-            agent_host.sendCommand(action_list[action_index])
-        action_index += 1
-        if len(action_list) == action_index:
+            action = scout_ai.get_next_action()
+            agent_host.sendCommand(action)
+
+        if action == None:
             # Need to wait few seconds to let the world state realise I'm in end block.
             # Another option could be just to add no move actions -- I thought sleep is more elegant.
             time.sleep(2)
+
         world_state = agent_host.getWorldState()
         for error in world_state.errors:
             print("Error:",error.text)

@@ -32,7 +32,7 @@ import math
 
 from priority_dict import priorityDictionary as PQ
 
-def load_grid(world_state):
+def load_grid(agent_host, world_state):
     """
     Used the agent observation API to get a 21 X 21 grid box around the agent (the agent is in the middle).
 
@@ -70,6 +70,8 @@ def find_start_end(grid):
     
     start = end = None
 
+    # start
+
     for i, block in enumerate(grid):
         if (start and end):
             break
@@ -78,6 +80,7 @@ def find_start_end(grid):
         if block == 'redstone_block':
             end = i
         
+    print("START,END:", start, end)
     return (start, end)
 
 def extract_action_list_from_path(path_list):
@@ -113,7 +116,6 @@ def dijkstra_shortest_path(grid_obs, source, dest, danger_blocks = []):
     """
 
     action_trans = {'north': -21, 'south': 21, 'west': -1, 'east': 1}
-
     path_set = set() # indexes
     priority_dict = PQ() # key = index, value = distance value
     parent = [-1] * len(grid_obs)
@@ -134,7 +136,6 @@ def dijkstra_shortest_path(grid_obs, source, dest, danger_blocks = []):
         path_set.add(smallest_vertex)
         # removing from priority dict
         priority_dict.pop(smallest_vertex)
-
         for adj_index in [smallest_vertex + modifier for modifier in action_trans.values()]:
             if adj_index in priority_dict:
                 # sum of distance value u (in priority queue) and edge u-v (always 1)
