@@ -22,6 +22,10 @@ import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 
 from ScoutAI import ScoutAI 
+from threading import Thread
+
+sys.path.append('../')
+from HandSignDetection import camera
 
 SIZE = 10
 OBS_SIZE = 5
@@ -190,7 +194,11 @@ if __name__ == '__main__':
 
     while agent_host.peekWorldState().is_mission_running or scout_ai.peekWorldState().is_mission_running:
         
-        command = input("Enter a command please: ")
+        inference_thread = Thread(target = camera.real_annotate)
+        inference_thread.start()
+        while 1:
+            print(camera.gesture_this_frame)
+        # command = input("Enter a command please: ")
         scout_ai.sendCommand(identify_command(command))
         time.sleep(0.5)
     print("Mission end")
