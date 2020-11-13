@@ -159,17 +159,20 @@ def buildEnvironment():
             </Mission>''' 
 
 def identify_command(command):
-    if command == "thumbs up":
-        return "move 1"
+    if command == 0:
+        return None
 
-    if command == "1":
+    if command == 1:
         return "turn 1"
 
-    if command == "2":
+    if command == 2:
         return "attack 1"    
 
+    if command == 3:
+        return "move 1"
+
     if command == "thumbs down":
-        return "quit"    
+        return "quit"
 
 
 
@@ -192,15 +195,16 @@ if __name__ == '__main__':
 
     safeWaitForStart([agent_host,scout_ai])
 
-    while agent_host.peekWorldState().is_mission_running or scout_ai.peekWorldState().is_mission_running:
-        
-        inference_thread = Thread(target = camera.real_annotate)
-        inference_thread.start()
-        while 1:
-            print(camera.gesture_this_frame)
-        # command = input("Enter a command please: ")
-        scout_ai.sendCommand(identify_command(command))
+    inference_thread = Thread(target = camera.real_annotate)
+    inference_thread.start()
+    while agent_host.peekWorldState().is_mission_running or scout_ai.peekWorldState().is_mission_running:    
+        command = camera.gesture_this_frame
+        command = identify_command(command)
+        if not command is None:
+            scout_ai.sendCommand(command)
         time.sleep(0.5)
+    camera.run_thread = False
+    inference_thread.join()
     print("Mission end")
     exit(1)
     '''
