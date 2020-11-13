@@ -1,5 +1,8 @@
 import torch
 from torch import nn
+import sys
+from os import path
+import cv2
 
 class Reshape(nn.Module):
     def __init__(self, *target_shape):
@@ -37,7 +40,11 @@ class HandGestureClassifier(nn.Module):
         return self.pipeline(X)
 
 net = HandGestureClassifier()
-net.load_state_dict(torch.load('models/classifier_5.pt', map_location=torch.device('cpu') ) )
+
+# getting path of file relative to current directory
+basepath = path.dirname(__file__)
+filepath = path.abspath(path.join(basepath, "models", "classifier_5.pt"))
+net.load_state_dict(torch.load(filepath, map_location=torch.device('cpu') ) )
 
 from numpy.linalg import norm
 from scipy.signal import correlate2d
@@ -204,3 +211,11 @@ def real_annotate():
 
     cap.release()
     cv2.destroyAllWindows()
+
+
+if __name__ == '__main__':
+    from threading import Thread
+    inference_thread = Thread(target = real_annotate)
+    inference_thread.start()
+    while 1:
+        print(gesture_this_frame)
