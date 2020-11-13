@@ -24,9 +24,10 @@ Expansion of the ScoutAI will require the integration of MCCreator in order to i
 
 ## Evaluation:
 One performance evaluation for our project is the accuracy of our hand gesture classifier. For every gesture that we train the model with, we want it to achieve an accuracy of 98% or higher so that the Scout performs the correct command. As of right now, we have three working commands:
-1 finger up (1): turn 1 
-2 fingers up (2): attack 1
-Thumbs up (3): move 1
+
+- 1 finger up (1): turn 1 
+- 2 fingers up (2): attack 1
+- Thumbs up (3): move 1
 
 
 ![Hand1|30%](images/Hand1.jpg) ![Hand2|30%](images/Hand2.jpg) ![Hand3|30%](images/Hand3.jpg)
