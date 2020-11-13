@@ -175,6 +175,7 @@ def torchmodel_coefs(image):
     return predicted, conf
 
 gesture_this_frame = 0
+run_thread = True
 def real_annotate():
     global gesture_this_frame
 
@@ -184,7 +185,7 @@ def real_annotate():
     cv2.namedWindow('Main', cv2.WINDOW_NORMAL)
     cv2.resizeWindow('Main', (640, 480) )
 
-    while cap.isOpened():
+    while cap.isOpened() and run_thread:
         ret, frame = cap.read()
 
         process_frame = frame.copy()
