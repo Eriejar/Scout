@@ -3,6 +3,7 @@ from torch import nn
 import sys
 from os import path
 import cv2
+import numpy as np
 
 class Reshape(nn.Module):
     def __init__(self, *target_shape):
@@ -218,5 +219,3 @@ if __name__ == '__main__':
     from threading import Thread
     inference_thread = Thread(target = real_annotate)
     inference_thread.start()
-    while 1:
-        print(gesture_this_frame)
