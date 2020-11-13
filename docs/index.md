@@ -8,7 +8,7 @@ title:  Home
 ### Reports:
 
 - [Proposal](proposal.md)
-- [Status](status.html)
+- [Status](status.md)
 - [Final](final.html)
 
 ### Introduction
