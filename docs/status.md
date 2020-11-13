@@ -29,7 +29,7 @@ One performance evaluation for our project is the accuracy of our hand gesture c
 Thumbs up (3): move 1
 
 
-![Hand1](images/Hand1.jpg) ![Hand2](images/Hand2.jpg) ![Hand3](images/Hand3.jpg)
+![Hand1|30%](images/Hand1.jpg) ![Hand2|30%](images/Hand2.jpg) ![Hand3|30%](images/Hand3.jpg)
 
 ## Remaining Goals and Challenges:
 Currently, we have a functional hand gesture classifier and multi-agent environment. The Scout is capable of performing simple commands such as moving forward, turning, and jumping. The gestures that we have classified are also very basic including a thumbs up, thumbs down, one finger up, and two fingers up. Although these gestures and commands work, they are not very beneficial to the user in the game. More specifically, having a Scout that just moves, turns, and jumps will not aid the user at all. 
