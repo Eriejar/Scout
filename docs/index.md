@@ -18,13 +18,13 @@ Actions to be developed include moving to where the player is looking at, retrie
 
 Hand Detection Showcase
 
-(/images/Hand1.jpg)
-(/images/Hand2.jpg)
-(/images/Hand3.jpg)
+[Hand1](/images/Hand1.jpg)
+[Hand2](/images/Hand2.jpg)
+[Hand3](/images/Hand3.jpg)
 
 Trainer Agent and Scout Agent in the same server
 
-(/images/Agents.jpg)
+[TrainerAndScout](/images/Agents.jpg)
 
 
 
