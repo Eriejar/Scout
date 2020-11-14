@@ -5,7 +5,7 @@ title:  Status
 
 
 ## Video Summary:
-[Video Summary Link](https://youtu.be/5tFRGf7K6w0)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/<5tFRGf7K6w0>" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 ## Project Summary:
 The purpose of this project is to create a Scout that can accurately receive and execute commands from the user through webcam input. Commands will be expressed through hand signals (i.e. thumbs up, one finger, two fingers) and depending on the command, the Scout will perform the respective action. The desirable actions are as follows:
