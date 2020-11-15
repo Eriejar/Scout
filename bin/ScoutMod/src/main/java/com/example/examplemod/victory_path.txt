@@ -1,0 +1,42 @@
+Important Forge Mod API Links
+=====================
+https://skmedix.github.io/ForgeJavaDocs/javadoc/forge/1.9.4-12.17.0.2051/net/minecraftforge/event/ServerChatEvent.html
+https://skmedix.github.io/ForgeJavaDocs/javadoc/forge/1.9.4-12.17.0.2051/net/minecraft/inventory/AnimalChest.html
+https://skmedix.github.io/ForgeJavaDocs/javadoc/forge/1.9.4-12.17.0.2051/net/minecraft/entity/Entity.html#setDead--
+https://skmedix.github.io/ForgeJavaDocs/javadoc/forge/1.9.4-12.17.0.2051/net/minecraft/pathfinding/package-summary.html
+https://skmedix.github.io/ForgeJavaDocs/javadoc/forge/1.9.4-12.17.0.2051/net/minecraft/entity/ai/EntityAIBase.html
+Example Mod Source Code:
+==================
+https://pastebin.com/4nu3etNi
+Independent Pets v1.1 Source Code - Pastebin.com
+
+Malmo Schema Notable Elements
+====================
+Element: RewardForCollectingItem
+Element: RewardForDamagingEntity
+Element: RewardForReachingPosition
+Element: RewardForTimeTaken
+Simple Type: InventoryCommand
+MichaelToday at 2:55 AM
+Custom Mod Folder Location (Where to place built mod)
+===============
+Malmo\Minecraft\run\mods
+Forge Setup
+=========
+https://mcforge.readthedocs.io/en/latest/gettingstarted/
+MichaelToday at 3:25 AM
+Gradle Project Code for Forge Version
+========================
+http://adfoc.us/serve/?id=27122866651016
+
+
+
+
+
+- mod works in world [D]
+- spawn wolf [D]
+- set wolf's owner to player [D]
+- set wolf behavior to EntityAIWander (https://skmedix.github.io/ForgeJavaDocs/javadoc/forge/1.9.4-12.17.0.2051/net/minecraft/entity/ai/EntityAIWander.html)
+- chat hook (https://skmedix.github.io/ForgeJavaDocs/javadoc/forge/1.9.4-12.17.0.2051/net/minecraftforge/event/ServerChatEvent.html)
+- wolf starts following player when "follow me" is detected in chat (https://skmedix.github.io/ForgeJavaDocs/javadoc/forge/1.9.4-12.17.0.2051/net/minecraft/entity/ai/EntityAIFollowOwner.html)
+
