@@ -19,13 +19,13 @@ public class EventEntityJoinWorld {
             World world = event.getWorld();
             EntityWolf pupper = (EntityWolf) event.getEntity();
             
-            System.out.format("Player Entities Size: %d", world.playerEntities.size());
+            System.out.format("Player Entities Size: %d\n", world.playerEntities.size());
 
             if (world.playerEntities.size() == 0) {
                 return;
             }
             EntityPlayer player = world.playerEntities.get(0);
-            System.out.format("Player Name: %s", player.getName());
+            System.out.format("Player Name: %s\n", player.getName());
             UUID user_id = EntityPlayer.getOfflineUUID(player.getName());
             pupper.setOwnerId(user_id); //java.util.UUID
             pupper.setTamed(true);
