@@ -24,9 +24,8 @@ public class WolfCommands {
         List<Entity> entityList = world.getLoadedEntityList();
         for (Entity ent : entityList) {
             if (ent instanceof EntityWolf && 
-                ent.hasCustomName()) {
-                //      &&
-                // ent.getCustomNameTag() == name
+                ent.hasCustomName() &&
+                ent.getCustomNameTag() == name) {
                 System.out.format("Found %s\n", ent.getCustomNameTag());
                 wolf = (EntityWolf) ent;
                 break;
