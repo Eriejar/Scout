@@ -30,13 +30,13 @@ public class EventEntityJoinWorld {
             pupper.setOwnerId(user_id); //java.util.UUID
             pupper.setTamed(true);
             
-            for (Object a : pupper.tasks.taskEntries.toArray()) {
-                EntityAIBase entryAction = ((EntityAITaskEntry) a).action;
+            // for (Object a : pupper.tasks.taskEntries.toArray()) {
+            //     EntityAIBase entryAction = ((EntityAITaskEntry) a).action;
                 
-                if (entryAction instanceof EntityAIFollowOwner) {
-                    pupper.tasks.removeTask(entryAction);
-                }
-            }
+            //     if (entryAction instanceof EntityAIFollowOwner) {
+            //         pupper.tasks.removeTask(entryAction);
+            //     }
+            // }
         }
     }
 }
