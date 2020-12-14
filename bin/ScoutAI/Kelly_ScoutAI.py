@@ -22,6 +22,7 @@ import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 
 from ScoutAI import ScoutAI 
+from CommandQueue import CommandQueue
 from threading import Thread
 
 sys.path.append('../')
@@ -163,16 +164,19 @@ def identify_command(command):
         return None
 
     if command == 1:
-        return "turn 1"
+        return 1
 
     if command == 2:
-        return "attack 1"    
-
+        return 2
+   
     if command == 3:
-        return "move 1"
+        return 3
 
-    if command == "thumbs down":
-        return "quit"
+    if command == 4:
+        return 4
+    
+    if command == 5:
+        return 5
 
 
 
@@ -182,6 +186,8 @@ if __name__ == '__main__':
     #scout_ai = ScoutAI(agent_host)
     scout_ai = MalmoPython.AgentHost()
     malmoutils.parse_command_line(agent_host)
+    commandQueue = CommandQueue()
+    counter = 0
 
     my_mission = MalmoPython.MissionSpec(buildEnvironment(),True)
     client_pool = MalmoPython.ClientPool()
@@ -201,8 +207,19 @@ if __name__ == '__main__':
         command = camera.gesture_this_frame
         command = identify_command(command)
         if not command is None:
-            scout_ai.sendCommand(command)
-        time.sleep(0.5)
+            if prev_command == command:
+                counter += 1
+            else:
+                counter = 0
+            if counter >= 30:
+                commandQueue.add_command(command)            
+
+        # Check if user has signaled for Scout to execute actions
+        if commandQueue[-1] == 5:
+            # Execute each command in the Command Queue
+            for i in range(len(commandQueue)):
+                agent_host.sendCommand("chat" + commandQueue.execute_command() + str(1))
+        
     camera.run_thread = False
     inference_thread.join()
     print("Mission end")
