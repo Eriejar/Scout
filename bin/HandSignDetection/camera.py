@@ -230,4 +230,8 @@ def real_annotate():
 if __name__ == '__main__':
     from threading import Thread
     inference_thread = Thread(target = real_annotate)
+<<<<<<< HEAD
     inference_thread.start()
+=======
+    inference_thread.start()
+>>>>>>> b1ef3f19f7adbee6f1795a2f5f2a1402ca063386

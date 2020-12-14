@@ -3,38 +3,31 @@ layout: default
 title:  Home
 ---
 
-Source code: https://github.com/eriejar/Scout
+[Source Code](https://github.com/eriejar/Scout)
 
-Reports:
+### Reports:
 
 - [Proposal](proposal.md)
-- [Status](status.html)
+- [Status](status.md)
 - [Final](final.html)
 
-What's Markdown (`.md`)?
+### Introduction
 
-Markdown is markup that lets you write hypertext (HTML) documents
-in easy-to-read and easy-to-write plain text.
-No angle brackets `<></>` required for
-paragraphs, lists, blockquotes, tables, etc.
+Scout AI aims to create a autonomous AI inside Minecraft that will execute actions based on hand gestures from the user. This will utilize pytorch's machine learning in order to classify actions and also will require behavior for Scout AI to be developed as native AI behaviors are not available from Minecraft are not available to be utilized for player characters.
 
-
-This is a paragraph (in Markdown). Some more
-text here.
-
-This is another paragraph.
-
-This is a list:
-
-- Orange
-- Apple
-- Blueberry
-
-$$x^2 = y^2$$
+Actions to be developed include moving to where the player is looking at, retrieving items, attacking enemies and other simple actions.
 
 
-Just getting started with Markdown?
-See the [HTML <-> Markdown Quick Reference (Cheat Sheet)][quickref].
+### Hand Detection Showcase
+
+![Hand1](images/Hand1.jpg)
+![Hand2](images/Hand2.jpg)
+![Hand3](images/Hand3.jpg)
+
+### Trainer Agent and Scout Agent in the same server
+
+![TrainerAndScout](images/Agents.jpg)
+
 
 
 [quickref]: https://github.com/mundimark/quickrefs/blob/master/HTML.md
