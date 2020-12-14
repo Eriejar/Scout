@@ -3,48 +3,61 @@ from torch import nn
 import sys
 from os import path
 import cv2
+import numpy as np
 
-class Reshape(nn.Module):
-    def __init__(self, *target_shape):
-        super().__init__()
-        self.target_shape = target_shape
+from torch.fft import rfftn as torch_rfftn
 
-    def forward(self, x):
-        return x.view(*self.target_shape)
-
-class HandGestureClassifier(nn.Module):
+class HandGestureClassifier2(nn.Module):
     def __init__(self):
         super().__init__()
-        self.pipeline = nn.Sequential(
-            nn.Conv2d(in_channels=1, out_channels=4, kernel_size = 5), #1*96*128 -> 4*92*124
+        self.conv_pipeline = nn.Sequential(
+            nn.Conv2d(in_channels= 1, out_channels= 16, kernel_size= 3, padding= 1), # 1 * 96 * 128 -> 16 * 96 * 128
             nn.LeakyReLU(),
-            nn.Conv2d(in_channels=4, out_channels=16, kernel_size = 5), #4*92*124 -> 16*88*120
+            nn.Conv2d(in_channels= 16, out_channels= 32, kernel_size= 5, padding= 2), # 16 * 96 * 128 -> 32 * 96 * 128
             nn.LeakyReLU(),
-            nn.Conv2d(in_channels=16, out_channels=32, kernel_size = 7), #16*88*120 -> 32*82*114
+            nn.Conv2d(in_channels= 32, out_channels= 32, kernel_size= 5, padding= 2), # 32 * 96 * 128 -> 32 * 96 * 128
             nn.LeakyReLU(),
-            nn.Conv2d(in_channels=32, out_channels=32, kernel_size=7), #32*82*114 -> 32*76*108
+            nn.MaxPool2d(kernel_size= 2, stride= 2),
+            nn.Conv2d(in_channels= 32, out_channels= 8, kernel_size= 3, padding= 1), # 32 * 48 * 64 -> 8 * 48 * 64
             nn.LeakyReLU(),
-            nn.Conv2d(in_channels=32, out_channels=4, kernel_size=7), #32*76*108 -> 4*70*102
-            Reshape(-1, 4*70*102),
-            nn.Linear(in_features=4*70*102, out_features=128),
-            nn.Dropout(p=.5),
-            nn.ReLU(),
-            nn.Linear(in_features=128, out_features=64),
-            nn.Dropout(p=.5),
-            nn.ReLU(),
-            nn.Linear(in_features=64, out_features=6),
-            nn.LogSoftmax()
+            nn.Conv2d(in_channels= 8, out_channels= 8, kernel_size= 3, padding= 1), # 8 * 48 * 64 -> 8 * 48 * 64
+            nn.LeakyReLU(),
+            nn.Conv2d(in_channels= 8, out_channels= 1, kernel_size= 1), # 8 * 48 * 64 -> 1 * 48 * 64
+            nn.LeakyReLU()
         )
 
+        self.linear_pipeline = nn.Sequential(
+            nn.Linear(in_features= 48 * 33, out_features= 64),
+            nn.LeakyReLU(),
+            nn.Linear(in_features= 64, out_features= 48),
+            nn.LeakyReLU(),
+            nn.Linear(in_features= 48, out_features= 48),
+            nn.LeakyReLU(),
+            nn.Linear(in_features= 48, out_features= 6),
+            nn.LogSoftmax()
+        )
+    
     def forward(self, X):
-        return self.pipeline(X)
+        X = self.conv_pipeline(X)
 
-net = HandGestureClassifier()
+        # Image-wise 2d FFT, positive frequencies only since images are real signals
+        # Transform to Amps : Freq
+        X = torch_rfftn(X, dim= (2, 3) )
+        X = torch.abs(X)
+
+        X = X.view(-1, 48 * 33)
+        
+        X = self.linear_pipeline(X)
+        return X
+
+net = HandGestureClassifier2()
+
 
 # getting path of file relative to current directory
 basepath = path.dirname(__file__)
-filepath = path.abspath(path.join(basepath, "models", "classifier_5.pt"))
+filepath = path.abspath(path.join(basepath, "models", "fourier_classifier1.pt"))
 net.load_state_dict(torch.load(filepath, map_location=torch.device('cpu') ) )
+
 
 from numpy.linalg import norm
 from scipy.signal import correlate2d
@@ -218,5 +231,3 @@ if __name__ == '__main__':
     from threading import Thread
     inference_thread = Thread(target = real_annotate)
     inference_thread.start()
-    while 1:
-        print(gesture_this_frame)
