@@ -111,6 +111,8 @@ def buildEnvironment():
                         </Inventory>
                     </AgentStart>
                     <AgentHandlers>
+                        <ObservationFromChat />
+                        <ChatCommands />
                         <DiscreteMovementCommands/>
                         <ObservationFromFullStats/>
                         <RewardForCollectingItem>
@@ -139,6 +141,8 @@ def buildEnvironment():
                         </Inventory>
                     </AgentStart>
                     <AgentHandlers>
+                        <ObservationFromChat />
+                        <ChatCommands />
                         <DiscreteMovementCommands/>
                         <ObservationFromFullStats/>
                         <RewardForCollectingItem>
