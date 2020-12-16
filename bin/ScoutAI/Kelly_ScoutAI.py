@@ -191,6 +191,7 @@ if __name__ == '__main__':
     counter = 0
 
     my_mission = MalmoPython.MissionSpec(buildEnvironment(),True)
+    my_mission.allowAllChatCommands()
     client_pool = MalmoPython.ClientPool()
     client_pool.add(MalmoPython.ClientInfo( "127.0.0.1", 10000) )
     client_pool.add(MalmoPython.ClientInfo( "127.0.0.1", 10001) )
