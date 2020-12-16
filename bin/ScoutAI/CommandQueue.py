@@ -6,7 +6,7 @@ class CommandQueue:
     
     def add_command(self, command):
         # Add command to the command queue at the index signaled by the user
-        commands.append(command)
+        self.commands.append(command)
         #commands.insert(index+1, command)
     
     def execute_command(self):

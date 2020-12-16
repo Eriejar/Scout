@@ -187,6 +187,7 @@ if __name__ == '__main__':
     scout_ai = MalmoPython.AgentHost()
     malmoutils.parse_command_line(agent_host)
     commandQueue = CommandQueue()
+    prev_command = 0
     counter = 0
 
     my_mission = MalmoPython.MissionSpec(buildEnvironment(),True)
@@ -211,14 +212,16 @@ if __name__ == '__main__':
                 counter += 1
             else:
                 counter = 0
-            if counter >= 30:
-                commandQueue.add_command(command)            
-
+            prev_command = command
+            if counter >= 2:
+                commandQueue.add_command(command)
+        print(commandQueue.commands)
         # Check if user has signaled for Scout to execute actions
-        if commandQueue[-1] == 5:
+        if len(commandQueue.commands) > 0 and commandQueue.commands[-1] == 5:
             # Execute each command in the Command Queue
-            for i in range(len(commandQueue)):
-                agent_host.sendCommand("chat" + commandQueue.execute_command() + str(1))
+            for i in range(len(commandQueue.commands)):
+                agent_host.sendCommand("chat" + str(commandQueue.execute_command() ) + str(1))
+            prev_command = 0
         
     camera.run_thread = False
     inference_thread.join()
