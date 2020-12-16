@@ -6,11 +6,11 @@ title:  Team
 # {{ page.title }}
 
 
-## USER 1
+## Michael Li
 ***Michael Li***: michayl4@uci.edu
 
-## USER 2
+## Kelly Wong
 ***Kelly Wong***: kellybw@uci.edu
 
-## USER 3
+## Saswat Mishra
 ***Saswat Mishra***: saswatm@uci.edu
