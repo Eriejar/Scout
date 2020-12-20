@@ -1,0 +1,91 @@
+    return '''<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+            <Mission xmlns="http://ProjectMalmo.microsoft.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+                <About>
+                    <Summary>Trainer</Summary>
+                </About>
+
+                <ServerSection>
+                    <ServerInitialConditions>
+                        <Time>
+                            <StartTime>0</StartTime>
+                            <AllowPassageOfTime>true</AllowPassageOfTime>
+                        </Time>
+                        <Weather>clear</Weather>
+                    </ServerInitialConditions>
+                    <ServerHandlers>
+                        <FlatWorldGenerator generatorString="3;7,2;1;"/>
+                        <DrawingDecorator>''' + \
+                            "<DrawCuboid x1='{}' x2='{}' y1='2' y2='2' z1='{}' z2='{}' type='air'/>".format(-SIZE, SIZE, -SIZE, SIZE) + \
+                            "<DrawCuboid x1='{}' x2='{}' y1='1' y2='1' z1='{}' z2='{}' type='stone'/>".format(-SIZE, SIZE, -SIZE, SIZE) + \
+                            '''<DrawBlock x='0'  y='2' z='0' type='air' />
+                            <DrawBlock x='5' y='1' z='5' type='redstone_block' />
+                            <DrawBlock x='0' y='1' z='0' type='emerald_block' />
+                            <DrawEntity x='1' y='2' z='10' type="Cow" />
+                            <DrawEntity x='10' y='2' z='20' type="Wolf" />
+                            <DrawBlock x='8' y='2' z='10' type='diamond_block' />
+                        </DrawingDecorator>
+                        <ServerQuitWhenAnyAgentFinishes/>
+                    </ServerHandlers>
+                </ServerSection>
+
+                <AgentSection mode="Survival">
+                    <Name>Trainer</Name>
+                    <AgentStart>
+                        <Placement x="5.5" y="2" z="5.5" pitch="0" yaw="90"/>
+                        <Inventory>
+                            <InventoryItem slot="0" type="diamond_pickaxe"/>
+                        </Inventory>
+                    </AgentStart>
+                    <AgentHandlers>
+                        <ObservationFromChat />
+                        <ChatCommands />
+                        <DiscreteMovementCommands/>
+                        <ObservationFromFullStats/>
+                        <RewardForCollectingItem>
+                            <Item type="diamond" reward="1.0"/>
+                        </RewardForCollectingItem>
+                        <RewardForTouchingBlockType>
+                            <Block reward="-1.0" type="lava"/>
+                        </RewardForTouchingBlockType>
+                        <ObservationFromGrid>
+                            <Grid name="floorAll">
+                                <min x="-10" y="-1" z="-10"/>
+                                <max x="10" y="-1" z="10"/>
+                            </Grid>
+                        </ObservationFromGrid>
+                        <AgentQuitFromReachingCommandQuota total="'''+str(MAX_EPISODE_STEPS)+'''" />
+                    </AgentHandlers>
+                </AgentSection> 
+
+                
+                <AgentSection mode="Survival">
+                    <Name>Scout</Name>
+                    <AgentStart>
+                        <Placement x="0.5" y="2" z="0.5" pitch="45" yaw="0"/>
+                        <Inventory>
+                            <InventoryItem slot="0" type="diamond_pickaxe"/>
+                        </Inventory>
+                    </AgentStart>
+                    <AgentHandlers>
+                        <ObservationFromChat />
+                        <ChatCommands />
+                        <DiscreteMovementCommands/>
+                        <ObservationFromFullStats/>
+                        <RewardForCollectingItem>
+                            <Item type="diamond" reward="1.0"/>
+                        </RewardForCollectingItem>
+                        <RewardForTouchingBlockType>
+                            <Block reward="-1.0" type="lava"/>
+                        </RewardForTouchingBlockType>
+                        <ObservationFromGrid>
+                            <Grid name="floorAll">
+                                <min x="-10" y="-1" z="-10"/>
+                                <max x="10" y="-1" z="10"/>
+                            </Grid>
+                        </ObservationFromGrid>
+                        <AgentQuitFromReachingCommandQuota total="'''+str(MAX_EPISODE_STEPS)+'''" />
+                    </AgentHandlers>
+                </AgentSection> 
+
+            </Mission>''' 

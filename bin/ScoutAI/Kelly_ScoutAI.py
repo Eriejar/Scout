@@ -26,7 +26,15 @@ from CommandQueue import CommandQueue
 from threading import Thread
 
 sys.path.append('../')
-from HandSignDetection import camera
+
+
+try:
+    from HandSignDetection import camera
+    CAMERA_ENABLED = True
+except ImportError:
+    print("Unable to import HandSignDetection Camera")
+    CAMERA_ENABLED = False
+
 
 SIZE = 10
 OBS_SIZE = 5
@@ -132,55 +140,45 @@ def buildEnvironment():
                 </AgentSection> 
 
                 
-                <AgentSection mode="Survival">
-                    <Name>Scout</Name>
-                    <AgentStart>
-                        <Placement x="0.5" y="2" z="0.5" pitch="45" yaw="0"/>
-                        <Inventory>
-                            <InventoryItem slot="0" type="diamond_pickaxe"/>
-                        </Inventory>
-                    </AgentStart>
-                    <AgentHandlers>
-                        <ObservationFromChat />
-                        <ChatCommands />
-                        <DiscreteMovementCommands/>
-                        <ObservationFromFullStats/>
-                        <RewardForCollectingItem>
-                            <Item type="diamond" reward="1.0"/>
-                        </RewardForCollectingItem>
-                        <RewardForTouchingBlockType>
-                            <Block reward="-1.0" type="lava"/>
-                        </RewardForTouchingBlockType>
-                        <ObservationFromGrid>
-                            <Grid name="floorAll">
-                                <min x="-10" y="-1" z="-10"/>
-                                <max x="10" y="-1" z="10"/>
-                            </Grid>
-                        </ObservationFromGrid>
-                        <AgentQuitFromReachingCommandQuota total="'''+str(MAX_EPISODE_STEPS)+'''" />
-                    </AgentHandlers>
-                </AgentSection> 
+                
 
             </Mission>''' 
 
+
+
+
 def identify_command(command):
+    '''
+1 finger = attack,
+2 finger = go to designated spot, 
+3 (thumbs up) = follow agent, 
+4 (palm up like stop) = sit, 
+5 (fist out) = execute commands in the command queue
+
+mod inputs:
+attack
+follow
+sit
+go there
+    '''
+
     if command == 0:
         return None
 
     if command == 1:
-        return 1
+        return "attack"
 
     if command == 2:
-        return 2
+        return "go there"
    
     if command == 3:
-        return 3
+        return "follow"
 
     if command == 4:
-        return 4
+        return "sit"
     
     if command == 5:
-        return 5
+        return -1
 
 
 
@@ -198,38 +196,93 @@ if __name__ == '__main__':
     my_mission.allowAllChatCommands()
     client_pool = MalmoPython.ClientPool()
     client_pool.add(MalmoPython.ClientInfo( "127.0.0.1", 10000) )
-    client_pool.add(MalmoPython.ClientInfo( "127.0.0.1", 10001) )
+    # client_pool.add(MalmoPython.ClientInfo( "127.0.0.1", 10001) )
     agent_host_record = MalmoPython.MissionRecordSpec()
-    scout_record = MalmoPython.MissionRecordSpec()
+    # scout_record = MalmoPython.MissionRecordSpec()
 
     safeStartMission(agent_host, my_mission, client_pool, agent_host_record,0,'')
-    safeStartMission(scout_ai, my_mission, client_pool, scout_record,1,'')
+    # safeStartMission(scout_ai, my_mission, client_pool, scout_record,1,'')
 
-    safeWaitForStart([agent_host,scout_ai])
+    print("start mission success")
+    safeWaitForStart([agent_host])
+    # safeWaitForStart([agent_host,scout_ai])
 
-    inference_thread = Thread(target = camera.real_annotate)
-    inference_thread.start()
+    if CAMERA_ENABLED:
+        inference_thread = Thread(target = camera.real_annotate)
+        inference_thread.start()
+    else:
+        print("Camera Disabled")
+
+
+    agent_host.sendCommand("chat To summon scout type in /summon wolf ~ ~ ~ {CustomName:\"Scout\"}") # ingame reminder of how to spawn wolf with name Scout
+    command = None
     while agent_host.peekWorldState().is_mission_running or scout_ai.peekWorldState().is_mission_running:    
-        command = camera.gesture_this_frame
+        
+        if CAMERA_ENABLED:
+            command = camera.gesture_this_frame
+        else:
+            command = input("Simulate Camera Input (int): ")
+            try:
+                command = int(command)
+            except ValueError:
+                print("Invalid input, must be int")
+
         command = identify_command(command)
+        repeat_threshold = 1 # how many frames the signal must be held up for it to process
         if not command is None:
             if prev_command == command:
                 counter += 1
             else:
                 counter = 0
             prev_command = command
-            if counter >= 2:
+            if counter >= repeat_threshold:
                 commandQueue.add_command(command)
+                if (command != -1):
+                    commandQueue.add_command('wait 3')
+
+
         print(commandQueue.commands)
         # Check if user has signaled for Scout to execute actions
-        if len(commandQueue.commands) > 0 and commandQueue.commands[-1] == 5:
+        if len(commandQueue.commands) > 0 and commandQueue.commands[-1] == -1:
             # Execute each command in the Command Queue
-            for i in range(len(commandQueue.commands)):
-                agent_host.sendCommand("chat" + str(commandQueue.execute_command() ) + str(1))
+            print("Executing Command Queue")
+            for i in range(len(commandQueue.commands) - 1): # length - 1 as -1 command is end
+
+                execute_command = str( commandQueue.execute_command() )
+                
+                # detecting if command is of wait variety
+                wait = None
+                split_command = execute_command.split(' ')
+                if (split_command[0] == 'wait'):
+                    if len(split_command) < 2:
+                        print("wait command needs a time (seconds)")
+                        continue
+                    
+                    duration = split_command[1]
+                    try:
+                        duration = int(duration)
+                    except(ValueError):
+                        print("wait argument must be an integer")
+                        continue
+
+                    print("wait detected | duration:", duration)
+                    wait = duration
+
+                if (wait):
+                    time.sleep(wait)
+                    continue
+                
+                console_string = "chat " + execute_command
+
+                agent_host.sendCommand(console_string)
+
+            commandQueue.reset()
             prev_command = 0
         
-    camera.run_thread = False
-    inference_thread.join()
+    if CAMERA_ENABLED:
+        camera.run_thread = False
+        inference_thread.join()
+
     print("Mission end")
     exit(1)
     '''
