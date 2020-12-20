@@ -51,5 +51,10 @@ public class EventServerChat {
             System.out.format("\tgo there\n");
             WolfCommands.goToWhereUserIsLooking(wolf);
         }
+
+        if (message.equals("attack")) {
+            System.out.format("\tattack\n");
+            WolfCommands.attackTarget(wolf, world);
+        }
     }
 }
