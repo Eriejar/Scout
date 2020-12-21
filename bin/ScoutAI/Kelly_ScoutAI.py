@@ -287,6 +287,7 @@ if __name__ == '__main__':
                 agent_host.sendCommand(console_string)
 
             commandQueue.reset()
+            command = None
             last_added_command = None
             prev_command = 0
         
