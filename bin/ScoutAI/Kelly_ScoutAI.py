@@ -223,6 +223,7 @@ if __name__ == '__main__':
     for help_str in help_string_array:
         agent_host.sendCommand(f"chat {help_str}")
     command = None
+    last_added_command = None
     while agent_host.peekWorldState().is_mission_running or scout_ai.peekWorldState().is_mission_running:    
         
         if CAMERA_ENABLED:
@@ -235,7 +236,6 @@ if __name__ == '__main__':
                 print("Invalid input, must be int")
 
         command = identify_command(command)
-        last_added_command = None
         repeat_threshold = 30 # how many frames the signal must be held up for it to process
         if not command is None:
             if prev_command == command:
@@ -287,6 +287,7 @@ if __name__ == '__main__':
                 agent_host.sendCommand(console_string)
 
             commandQueue.reset()
+            last_added_command = None
             prev_command = 0
         
     if CAMERA_ENABLED:
