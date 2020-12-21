@@ -135,3 +135,5 @@ Code Documentation:
 - [Forge Mod API Documentation](https://skmedix.github.io/ForgeJavaDocs/javadoc/forge/1.9.4-12.17.0.2051/overview-summary.html)
 
 Image Sources:
+- [Fourier Transform](https://images.fineartamerica.com/images-medium-large-5/fourier-transform-science-photo-library.jpg)
+- [Image Shift](https://miro.medium.com/max/1354/0*nV_o47J-bsA3ev5O.png)
