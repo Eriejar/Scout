@@ -125,7 +125,7 @@ public class WolfCommands {
             List<Entity> entityList = world.getLoadedEntityList();
             Entity targetEntity = null;
             for (Entity ent : entityList) {
-                if (!(ent instanceof EntityPlayer) && (ent instanceof EntityLiving)) {
+                if (!(ent instanceof EntityPlayer) && !(ent instanceof EntityWolf) && (ent instanceof EntityLiving)) {
                     BlockPos mopPos = mop.getBlockPos();
                     BlockPos targetPos = ent.getPosition();
                     double distance_from_block = WolfCommands.distanceTo(mopPos, targetPos);
