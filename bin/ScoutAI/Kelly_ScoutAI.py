@@ -103,7 +103,6 @@ def buildEnvironment():
                             <DrawBlock x='5' y='1' z='5' type='redstone_block' />
                             <DrawBlock x='0' y='1' z='0' type='emerald_block' />
                             <DrawEntity x='1' y='2' z='10' type="Cow" />
-                            <DrawEntity x='10' y='2' z='20' type="Wolf" />
                             <DrawBlock x='8' y='2' z='10' type='diamond_block' />
                         </DrawingDecorator>
                         <ServerQuitWhenAnyAgentFinishes/>
@@ -228,7 +227,7 @@ if __name__ == '__main__':
                 print("Invalid input, must be int")
 
         command = identify_command(command)
-        repeat_threshold = 1 # how many frames the signal must be held up for it to process
+        repeat_threshold = 30 # how many frames the signal must be held up for it to process
         if not command is None:
             if prev_command == command:
                 counter += 1
