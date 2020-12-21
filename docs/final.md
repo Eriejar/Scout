@@ -45,7 +45,7 @@ Convolutional layers are also extremely parameter efficient and able to represen
 
 If we have some signal, we can decompose it into a sum of sinusoids of the form A*sin(2*pi*f*t + b), each with their own amplitude (A), phase shift (b), and frequency (f). Here’s an example:
 
-![Signals](images/signals.png)
+![Signals](images/signals.png){:height="30%" width="30%"}
 
 We can recover these phase shifts and frequencies through a process called the Fourier Transform. Here is the formula for it:
 
@@ -54,6 +54,7 @@ We can recover these phase shifts and frequencies through a process called the F
 We see that the Fourier transform is essentially a dot product between our function f(x) and the exponential term on the left (which simplifies to a sum of sinusoids). This means that it is a differentiable function between the output and the input, which is a key requirement for neural network layers. If we take the euclidean norm of the fourier coefficients for a point in the signal, we can recover the amplitude of the signal in that frequency bin. What this means is that, no matter what the phase shift of some sinusoid function is, if it is added to some signal, then we can recover the amplitude & frequency. This means that this is translation invariant relative to the output. Here is an example:
 
 FFT amplitude:frequency output on top, image on bottom
+
 ![FFT Amplitude 1](images/fft_amplitude_1.png)
 ![FFT Amplitude 2](images/fft_amplitude_2.png)
 
