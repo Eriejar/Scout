@@ -214,7 +214,14 @@ if __name__ == '__main__':
 
 
     agent_host.sendCommand("chat To summon scout type in /summon wolf ~ ~ ~ {CustomName:\"Scout\"}") # ingame reminder of how to spawn wolf with name Scout
-    agent_host.
+    
+    help_string_array = ["1 finger = attack",
+                        "2 finger = go to designated spot", 
+                        "thumbs up = follow player",
+                        "palm up = sit",
+                        "fist out = execute commands"]
+    for help_str in string_array:
+        agent_host.sendCommand(f"chat {help_str}")
     command = None
     while agent_host.peekWorldState().is_mission_running or scout_ai.peekWorldState().is_mission_running:    
         
