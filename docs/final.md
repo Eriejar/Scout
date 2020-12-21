@@ -30,7 +30,7 @@ The image is then normalized across the RGB axis, so that an image of HxWx3 beco
 Next, we take a Gaussian kernel (a kernel with weights following a gaussian distribution according to their distances from the center of the matrix) and cross correlate it with the image. This acts as a low pass filter and removes random visual spikes such as random black and white spots, and makes the following step more effective.
 Fourth, we take a Sobel kernel (a matrix with a positive value in the middle and negative values on the outsides and normalized to norm 1) and cross correlate it with the image. This is useful for falling edge detection, where a surface goes from bright to dark. The negative kernel is also applied to detect rising edges ranging from dark to light. After a bit of thresholding, we now have a map of edge detections that look like this:
 
-![Edge Detection](images/edge_detection.jpg)
+![Edge Detection](images/edge_detection.png)
 
 Fifth, we take the mean and standard deviations of the activations in both the x and y directions. We center the image according to the mean and zero everything past 1.5 standard deviations from the mean. This gets rid of random extraneous things on the edge of the frame, like pets walking in and out of frame, lamp posts, etc. 
 This condensed image then runs through a neural network. The details of the neural network is explained in the following paragraphs. 
