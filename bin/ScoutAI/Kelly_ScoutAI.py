@@ -235,9 +235,10 @@ if __name__ == '__main__':
                 counter = 0
             prev_command = command
             if counter >= repeat_threshold:
-                commandQueue.add_command(command)
-                if (command != -1):
-                    commandQueue.add_command('wait 3')
+                if len(commandQueue.commands) == 0 or command != commandQueue.commands[-1]:
+                    commandQueue.add_command(command)
+                    if (command != -1):
+                        commandQueue.add_command('wait 3')
 
 
         print(commandQueue.commands)
