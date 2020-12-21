@@ -9,7 +9,7 @@ title:  Home
 
 - [Proposal](proposal.md)
 - [Status](status.md)
-- [Final](final.html)
+- [Final](final.md)
 
 ### Introduction
 
