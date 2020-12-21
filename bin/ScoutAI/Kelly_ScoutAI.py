@@ -220,7 +220,7 @@ if __name__ == '__main__':
                         "thumbs up = follow player",
                         "palm up = sit",
                         "fist out = execute commands"]
-    for help_str in string_array:
+    for help_str in help_string_array:
         agent_host.sendCommand(f"chat {help_str}")
     command = None
     while agent_host.peekWorldState().is_mission_running or scout_ai.peekWorldState().is_mission_running:    
