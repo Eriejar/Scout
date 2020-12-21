@@ -214,6 +214,7 @@ if __name__ == '__main__':
 
 
     agent_host.sendCommand("chat To summon scout type in /summon wolf ~ ~ ~ {CustomName:\"Scout\"}") # ingame reminder of how to spawn wolf with name Scout
+    agent_host.
     command = None
     while agent_host.peekWorldState().is_mission_running or scout_ai.peekWorldState().is_mission_running:    
         
@@ -227,6 +228,7 @@ if __name__ == '__main__':
                 print("Invalid input, must be int")
 
         command = identify_command(command)
+        last_added_command = None
         repeat_threshold = 30 # how many frames the signal must be held up for it to process
         if not command is None:
             if prev_command == command:
@@ -235,8 +237,9 @@ if __name__ == '__main__':
                 counter = 0
             prev_command = command
             if counter >= repeat_threshold:
-                if len(commandQueue.commands) == 0 or command != commandQueue.commands[-1]:
+                if len(commandQueue.commands) == 0 or command != last_added_command:
                     commandQueue.add_command(command)
+                    last_added_command = command
                     if (command != -1):
                         commandQueue.add_command('wait 3')
 
