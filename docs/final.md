@@ -45,7 +45,7 @@ Convolutional layers are also extremely parameter efficient and able to represen
 
 If we have some signal, we can decompose it into a sum of sinusoids of the form A*sin(2*pi*f*t + b), each with their own amplitude (A), phase shift (b), and frequency (f). Here’s an example:
 
-![Signals](images/signals.png){:height="30%" width="30%"}
+![Signals](images/signals.png){:height="50%" width="50%"}
 
 We can recover these phase shifts and frequencies through a process called the Fourier Transform. Here is the formula for it:
 
