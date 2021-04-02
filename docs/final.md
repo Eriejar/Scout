@@ -8,7 +8,7 @@ title: Final Report
 <iframe width="560" height="315" src="https://www.youtube.com/embed/YURJS52enMY" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
-## Project Sumary
+## Project Summary
 
 The goal of our project, Scout, is to enable the user to send commands via webcam to their sidekick, Scout, to be executed. The advantage of having this feature is that while the user is busy performing a task at hand, the Scout could be given orders to complete other duties in parallel. For example, if you were battling an enemy, but were also in need of food, you can instruct Scout to attack a nearby cow to retrieve meat. The greatest benefit from using Scout is that rather than taking more time to type out a command in the chat window, you just simply need to hold up a hand signal. This may not seem like a big deal, but in the time of combat, this extra time could save the agent’s life. Therefore, with the aid of Scout fulfilling the bare necessities, the agent will be able to focus on more complex missions. 
 
